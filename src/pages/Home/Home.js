@@ -1,10 +1,12 @@
 import { useEffect,useState } from "react";
-import { Navbar,HotelCard,Categories,SearchStayWithDate } from "../../components";
+import { Navbar,HotelCard,Categories,SearchStayWithDate,Filter } from "../../components";
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import './Home.css';
-import { useCategory,useDate } from "../../context";
+import { useCategory,useDate,useFilter } from "../../context";
+import { getHotelsByPrice,getHotelsByRoomsAndBeds,
+        getHotelsByPropertyType,getHotelsByRating,getHotelsByCancelation } from "../../utils";
 
 export const Home=()=>{
 
@@ -14,6 +16,10 @@ export const Home=()=>{
     const [hotels,setHotels]=useState([]);
     const {hotelCategory,setHotelCategory}=useCategory();
     const {isSearchModalOpen}=useDate();
+    const {isFilterModalOpen,noOfBathrooms,noOfBedrooms,noOfBeds,
+            priceRange,propertyType,hotelRatings,isCancellable}=useFilter();
+
+
 
     useEffect(()=>{
         const fetchHotels=async ()=>{
@@ -57,6 +63,11 @@ export const Home=()=>{
         }, 1000);
     }
 
+    const filteredHotelsByPrice=getHotelsByPrice(hotels,priceRange);
+    const filteredHotelsByRoomsAndBeds=getHotelsByRoomsAndBeds(filteredHotelsByPrice,noOfBathrooms,noOfBedrooms,noOfBeds);
+    const filteredHotelsByPropertyType=getHotelsByPropertyType(filteredHotelsByRoomsAndBeds,propertyType);
+    const filteredHotelsByRating=getHotelsByRating(filteredHotelsByPropertyType,hotelRatings);
+    const filteredHotelsByCancelation=getHotelsByCancelation(filteredHotelsByRating,isCancellable)
 
     return(
         <div className="relative">
@@ -73,13 +84,15 @@ export const Home=()=>{
                     >
                         <main className="main d-flex align-center wrap gap-larger">
                             {
-                                hotels && hotels.map(hotel=><HotelCard key={hotel._id} hotel={hotel}/>)
+                                filteredHotelsByCancelation && filteredHotelsByCancelation.map((hotel)=>
+                                        (<HotelCard key={hotel._id} hotel={hotel}/>))
                             }  
                         </main>
                     </InfiniteScroll>
                 ) : (<></>)
             }
             {isSearchModalOpen && <SearchStayWithDate/>}
+            {isFilterModalOpen && <Filter/>}
         </div>
     )
 }
