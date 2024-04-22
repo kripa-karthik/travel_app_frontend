@@ -1,10 +1,10 @@
 import { useEffect,useState } from "react";
-import { Navbar,HotelCard,Categories,SearchStayWithDate,Filter } from "../../components";
+import { Navbar,HotelCard,Categories,SearchStayWithDate,Filter,AuthModal } from "../../components";
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import './Home.css';
-import { useCategory,useDate,useFilter } from "../../context";
+import { useCategory,useDate,useFilter,useAuth } from "../../context";
 import { getHotelsByPrice,getHotelsByRoomsAndBeds,
         getHotelsByPropertyType,getHotelsByRating,getHotelsByCancelation } from "../../utils";
 
@@ -18,6 +18,8 @@ export const Home=()=>{
     const {isSearchModalOpen}=useDate();
     const {isFilterModalOpen,noOfBathrooms,noOfBedrooms,noOfBeds,
             priceRange,propertyType,hotelRatings,isCancellable}=useFilter();
+
+    const {isAuthModalOpen}=useAuth();
 
 
 
@@ -93,6 +95,7 @@ export const Home=()=>{
             }
             {isSearchModalOpen && <SearchStayWithDate/>}
             {isFilterModalOpen && <Filter/>}
+            {isAuthModalOpen && <AuthModal/>}
         </div>
     )
 }
