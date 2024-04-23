@@ -59,3 +59,7 @@
     gap:0.4px
 
 }
+
+.fav-selected{
+    color: red;
+}
