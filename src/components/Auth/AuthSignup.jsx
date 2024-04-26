@@ -1,5 +1,5 @@
 import './Auth.css';
-import { useAuth } from '../../context';
+import { useAuth,useAlert } from '../../context';
 import { validateName,validateEmail,validateNumber,validatePassword } from '../../utils';
 import { signupHandler } from '../../Services';
 
@@ -9,7 +9,7 @@ let isNumberValid,isEmailValid,isNameValid,isPasswordValid,isConfirmPasswordVali
 export const AuthSignup=()=>{
 
     const {username,number,email,password,confirmPassword,authDispatch}=useAuth();
-
+    const {setAlert}=useAlert();
     const handleNumberChange=(event)=>{
 
         isNumberValid=validateNumber(event.target.value);
@@ -88,13 +88,13 @@ export const AuthSignup=()=>{
         event.preventDefault();
         if(isNumberValid && isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid){
 
-            signupHandler(username,number,email,password);
+            signupHandler(username,number,email,password,setAlert);
         }
         authDispatch({
             type:"CLEAR_USER_DATA"
         })
         authDispatch({
-            type:"SET_TO_SIGNUP"
+            type:"SET_TO_LOGIN"
         })
 
     }

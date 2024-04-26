@@ -42,7 +42,7 @@ export const SearchResults=()=>{
 
     return(
         <Fragment>
-            <Navbar/>
+            <Navbar route="searchResults"/>
             <section className="main d-flex align-center wrap gap-larger">
                 {
                     filteredSearchResults ? (

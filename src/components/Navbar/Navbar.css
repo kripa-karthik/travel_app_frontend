@@ -58,11 +58,16 @@
 }
 
 .person {
-background-color: var(--accent-color);
+background-color: var(--background-color);
 border-radius: 0 4px 4px 0;
 }
 
 .cursor-pointer:hover{
   cursor: pointer;
+}
+
+.username{
+  font-size: 0.875rem;
+  color: var(--text-color-primary);
 }
  

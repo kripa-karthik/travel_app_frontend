@@ -25,7 +25,6 @@ export const HotelCard=({hotel})=>{
                     type:"ADD_TO_WISHLIST",
                     payload:hotel
                 })
-                navigate("/wishlist");
             }else{
                 wishlistDispatch({
                     type:"REMOVE_FROM_WISHLIST",
