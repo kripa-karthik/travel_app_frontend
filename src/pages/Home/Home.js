@@ -1,10 +1,10 @@
 import { useEffect,useState } from "react";
-import { Navbar,HotelCard,Categories,SearchStayWithDate,Filter,AuthModal } from "../../components";
+import { Navbar,HotelCard,Categories,SearchStayWithDate,Filter,AuthModal,ProfileDropDown,Alert } from "../../components";
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import './Home.css';
-import { useCategory,useDate,useFilter,useAuth } from "../../context";
+import { useCategory,useDate,useFilter,useAuth,useAlert } from "../../context";
 import { getHotelsByPrice,getHotelsByRoomsAndBeds,
         getHotelsByPropertyType,getHotelsByRating,getHotelsByCancelation } from "../../utils";
 
@@ -19,9 +19,9 @@ export const Home=()=>{
     const {isFilterModalOpen,noOfBathrooms,noOfBedrooms,noOfBeds,
             priceRange,propertyType,hotelRatings,isCancellable}=useFilter();
 
-    const {isAuthModalOpen}=useAuth();
-
-
+    const {isAuthModalOpen,isDropDownModalOpen}=useAuth();
+    const {alert}=useAlert();
+    
 
     useEffect(()=>{
         const fetchHotels=async ()=>{
@@ -73,7 +73,7 @@ export const Home=()=>{
 
     return(
         <div className="relative">
-            <Navbar/>
+            <Navbar route="home"/>
             <Categories/>
             {
                 hotels && hotels.length>0 ? (
@@ -96,6 +96,8 @@ export const Home=()=>{
             {isSearchModalOpen && <SearchStayWithDate/>}
             {isFilterModalOpen && <Filter/>}
             {isAuthModalOpen && <AuthModal/>}
+            {isDropDownModalOpen && <ProfileDropDown/>}
+            {alert.open && <Alert/>}
         </div>
     )
 }

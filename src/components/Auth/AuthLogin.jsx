@@ -1,13 +1,15 @@
 import "./Auth.css";
 import { validateNumber,validatePassword } from "../../utils";
-import { useAuth } from "../../context";
+import { useAuth,useAlert } from "../../context";
 import { loginHandler } from "../../Services";
+
 
 let isNumberValid,isPasswordValid;
 
 export const AuthLogin=()=>{
 
     const {authDispatch,number,password} =useAuth();
+    const {setAlert}=useAlert();
 
     const handleNumberChange=(event)=>{
 
@@ -43,7 +45,7 @@ export const AuthLogin=()=>{
     const handleFormSubmit=async (e)=>{
         e.preventDefault();
         if(isNumberValid && isPasswordValid){
-            const {accessToken,username}=await loginHandler(number,password);
+            const {accessToken,username}=await loginHandler(number,password,setAlert);
             authDispatch({
                 type:"SET_ACCESSTOKEN",
                 payload:accessToken
@@ -63,13 +65,13 @@ export const AuthLogin=()=>{
     }
 
     const handleTestCredentialClick=async ()=>{
-        const {accessToken,username}=await loginHandler(7878787878,"Kripajk123*");
+        const {accessToken,username}=await loginHandler(7878787878,"Kripajk123*",setAlert);
         authDispatch({
-            type:"SET_ACCESS_TOKEN",
+            type:"SET_ACCESSTOKEN",
             payload:accessToken
         });
         authDispatch({
-            type:"SET_USER_NAME",
+            type:"SET_USERNAME",
             payload:username
 
         });

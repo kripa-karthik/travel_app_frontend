@@ -1,12 +1,17 @@
 import './FinalPrice.css';
+import { useNavigate } from 'react-router-dom';
 import { useDate } from '../../context';
-import {DateSelector} from '../DateSelector/DataSelector'
+import {DateSelector} from '../DateSelector/DataSelector';
 
 export const FinalPrice=({singleHotel})=>{
 
-    const {guests,dateDispatch}=useDate();
+    const {checkInDate,checkOutDate,guests,dateDispatch}=useDate();
+    const numberOfNights=checkInDate && checkOutDate ? (
+        checkOutDate.getTime()-checkInDate.getTime())/(1000*3600*24) : 0;
 
-    const {price,rating}=singleHotel;
+    const {_id,price,rating}=singleHotel;
+
+    const navigate=useNavigate();
 
     const handleGuestChange=(event)=>{
         dateDispatch({
@@ -15,6 +20,10 @@ export const FinalPrice=({singleHotel})=>{
 
         })
 
+    }
+
+    const handleReserveClick=()=>{
+        navigate(`/confirm-booking/stay/${_id}`)
     }
 
     return(
@@ -51,12 +60,15 @@ export const FinalPrice=({singleHotel})=>{
                 </div>
             </div>
             <div>
-                <button className='button btn-reserve btn-primary cursor'>Reserve</button>
+                <button className='button btn-reserve btn-primary cursor' 
+                    onClick={handleReserveClick} 
+                    disabled={checkInDate && checkOutDate && guests>0 ? false : true}
+                    >Reserve</button>
             </div>
             <div className='price-distribution d-flex direction-column'>
                 <div className='final-price d-flex align-center justify-space-between'>
-                    <span className='span'>Rs.{price} x 2 nights</span>
-                    <span className='span'>Rs.{price*2}</span>
+                    <span className='span'>Rs.{price} x {numberOfNights} nights</span>
+                    <span className='span'>Rs.{price*numberOfNights}</span>
                 </div>
                 <div className='final-price d-flex align-center justify-space-between'>
                     <span className='span'>Service fee</span>
@@ -64,7 +76,7 @@ export const FinalPrice=({singleHotel})=>{
                 </div>
                 <div className='final-price d-flex align-center justify-space-between'>
                     <span className='span'>Total</span>
-                    <span className='span'>Rs.{price*2+200}</span>
+                    <span className='span'>Rs.{price*numberOfNights+200}</span>
                 </div>
             </div>
         </div>

@@ -26,7 +26,7 @@ export const SingleHotelPage=()=>{
 
     return(
         <Fragment>
-            <Navbar/>
+            <Navbar route="singlehotel"/>
             <main className='single-hotel-page'>
                 <p className='hotel-name-add'>
                     {name},{state}
